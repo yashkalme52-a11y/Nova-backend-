@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.post('/chat', async (req, res) => {
@@ -39,6 +40,10 @@ You cover EVERYTHING — science, history, math, philosophy, art, music, sports,
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }
+});
+
+app.get('/', (req, res) => {
+  res.send('Nova backend is running! 🚀');
 });
 
 app.listen(process.env.PORT || 3000, () => {
