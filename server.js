@@ -2,23 +2,24 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.post('/chat', async (req, res) => {
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'llama-3.3-70b-versatile',
         max_tokens: 1024,
-        system: `You are Nova — a brilliant, curious, warm AI guide for infinite knowledge exploration.
+        messages: [
+          {
+            role: 'system',
+            content: `You are Nova — a brilliant, curious, warm AI guide for infinite knowledge exploration.
 
 LANGUAGE RULE (MOST IMPORTANT): Always detect the user's language and respond in the EXACT same language.
 Hindi → Hindi | English → English | Hinglish → Hinglish | Spanish → Spanish | Any language → match it perfectly.
@@ -30,14 +31,21 @@ YOUR STYLE:
 - End with one curious follow-up question or rabbit hole teaser
 - Emojis: 1-2 max only when meaningful
 
-You cover EVERYTHING — science, history, math, philosophy, art, music, sports, cooking, business, space, life — infinity.`,
-        messages: req.body.messages
+You cover EVERYTHING — science, history, math, philosophy, art, music, sports, cooking, business, space, life — infinity.`
+          },
+          ...req.body.messages
+        ]
       })
     });
 
     const data = await response.json();
-    res.json(data);
+    const text = data.choices?.[0]?.message?.content || 'Kuch issue aa gaya, dobara try karo!';
+
+    res.json({
+      content: [{ type: 'text', text }]
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 });
