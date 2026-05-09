@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
   .topic-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 14px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text); transition: all 0.2s; }
   .topic-card:hover { border-color: var(--accent); transform: translateY(-1px); }
   .topic-card span:first-child { font-size: 20px; }
-  #chat { display: none; flex: 1; flex-direction: column; }
+  #chat { display: none; flex-direction: column; flex: 1; }
   #messages { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 18px; max-width: 720px; width: 100%; margin: 0 auto; }
   .msg { display: flex; gap: 10px; animation: slideUp 0.3s ease; }
   .msg.user { flex-direction: row-reverse; }
@@ -110,7 +110,7 @@ app.get('/', (req, res) => {
 
   function showChat() {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('chat').style.display = 'flex';
+    document.getElementById('chat').style.cssText = 'display:flex; flex:1; flex-direction:column;';
     document.querySelector('.header-btn') && (document.querySelector('.header-btn').outerHTML = '<button class="back-btn" onclick="goHome()">← Back</button>');
     document.getElementById('msg-input').focus();
   }
