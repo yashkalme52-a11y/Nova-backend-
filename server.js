@@ -77,18 +77,18 @@ app.get('/', (req, res) => {
   <div class="hero-icon">⭐</div>
   <h1>Explore<br><em>Infinite</em><br>Knowledge</h1>
   <p class="hero-sub">Kuch bhi pucho — science, history, universe, life. Kisi bhi language mein. Infinity tak.</p>
-  <button class="try-btn" onclick="startChat()">✨ Nova se baat karo</button>
-  <button class="waitlist-btn" onclick="window.open('https://tally.so/r/7R4D4L','_blank')">🚀 Early Access Join Karo</button>
+  <button class="try-btn" id="tryBtn">✨ Nova se baat karo</button>
+  <button class="waitlist-btn" id="waitlistBtn">🚀 Early Access Join Karo</button>
   <div class="topics-label">Ya yahan se shuru karo</div>
   <div class="topics-grid">
-    <div class="topic-card" onclick="startWithTopic('Universe kya hai?')"><span>🌌</span><span>Universe kya hai?</span></div>
-    <div class="topic-card" onclick="startWithTopic('Black hole kaise banta hai?')"><span>⚫</span><span>Black hole kya hai?</span></div>
-    <div class="topic-card" onclick="startWithTopic('Music hume emotional kyun karta hai?')"><span>🎵</span><span>Music emotional kyun?</span></div>
-    <div class="topic-card" onclick="startWithTopic('Time travel possible hai?')"><span>⏳</span><span>Time travel possible?</span></div>
-    <div class="topic-card" onclick="startWithTopic('Paise kaise kaam karte hain?')"><span>💰</span><span>Paise kaise kaam karte?</span></div>
-    <div class="topic-card" onclick="startWithTopic('Dimag kaise kaam karta hai?')"><span>🧠</span><span>Dimag kaise kaam karta?</span></div>
-    <div class="topic-card" onclick="startWithTopic('Earth kab bani?')"><span>🌍</span><span>Earth kab bani?</span></div>
-    <div class="topic-card" onclick="startWithTopic('AI kya hai?')"><span>🤖</span><span>AI kya hai?</span></div>
+    <div class="topic-card" data-topic='Universe kya hai?'><span>🌌</span><span>Universe kya hai?</span></div>
+    <div class="topic-card" data-topic='Black hole kaise banta hai?'><span>⚫</span><span>Black hole kya hai?</span></div>
+    <div class="topic-card" data-topic='Music hume emotional kyun karta hai?'><span>🎵</span><span>Music emotional kyun?</span></div>
+    <div class="topic-card" data-topic='Time travel possible hai?'><span>⏳</span><span>Time travel possible?</span></div>
+    <div class="topic-card" data-topic='Paise kaise kaam karte hain?'><span>💰</span><span>Paise kaise kaam karte?</span></div>
+    <div class="topic-card" data-topic='Dimag kaise kaam karta hai?'><span>🧠</span><span>Dimag kaise kaam karta?</span></div>
+    <div class="topic-card" data-topic='Earth kab bani?'><span>🌍</span><span>Earth kab bani?</span></div>
+    <div class="topic-card" data-topic='AI kya hai?'><span>🤖</span><span>AI kya hai?</span></div>
   </div>
 </div>
 <div id="chat">
@@ -142,6 +142,13 @@ app.get('/', (req, res) => {
   }
 
   function removeTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+  // Add event listeners
+  document.getElementById('tryBtn').addEventListener('click', function() { startChat(); });
+  document.getElementById('waitlistBtn').addEventListener('click', function() { window.open('https://tally.so/r/7R4D4L','_blank'); });
+  document.querySelectorAll('[data-topic]').forEach(function(el) {
+    el.addEventListener('click', function() { startWithTopic(this.getAttribute('data-topic')); });
+  });
 
   async function sendMsg(text) {
     const input = document.getElementById('msg-input');
